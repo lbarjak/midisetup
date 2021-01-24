@@ -29,6 +29,6 @@ function midi(response) {
         midiChannel = midiStatusByte.substring(1);
         midiKey = event.data[1];
         midiVelocity = event.data[2];
-        console.log(event.currentTarget.name, "-", "midiEvent:", midiEvent, " midiChannel:", midiChannel, " midiKey:", midiKey);
+        console.log(event.currentTarget.name, "-", "midiEvent:", midiEvent, " midiChannel:", midiChannel, " midiKey:", midiKey, "midiVelocití", midiVelocity);
     }
 }
