@@ -1,16 +1,19 @@
 export default class Midi {
-
   constructor() {
     navigator.requestMIDIAccess().then(this.midi);
   }
 
   midi(response) {
-
     for (let outPort of response.outputs.values()) {
       console.log("output ports:", outPort.type, outPort.name, outPort.state);
     }
     for (let inputPort of response.inputs.values()) {
-      console.log("input ports:", inputPort.type, inputPort.name, inputPort.state);
+      console.log(
+        "input ports:",
+        inputPort.type,
+        inputPort.name,
+        inputPort.state
+      );
       connect(inputPort);
     }
 
@@ -33,6 +36,8 @@ export default class Midi {
       port.onmidimessage = midiMessage;
     }
 
+    let self = this;
+    let midiStatusByte, midiEvent, midiChannel, midiKey, midiVelocity;
     function midiMessage(event) {
       midiStatusByte = event.data[0].toString(16);
       midiEvent = midiStatusByte.substring(0, 1);
@@ -51,6 +56,13 @@ export default class Midi {
         "midiVelocití",
         midiVelocity
       );
+      if (midiEvent == "9") {
+        console.log("play");
+        //self.play(midiKey, midiChannel, midiVelocity);
+      } else {
+        console.log("stop");
+        //self.stop(midiKey, midiChannel);
+      }
     }
   }
 }
