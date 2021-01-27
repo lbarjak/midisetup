@@ -4,9 +4,19 @@ export default class Midi {
   }
 
   midi(response) {
-    for (let outPort of response.outputs.values()) {
-      console.log("output ports:", outPort.type, outPort.name, outPort.state);
+    let midiOutputs = [];
+    self = this;
+
+    for (let outputPort of response.outputs.values()) {
+      console.log(
+        "output ports:",
+        outputPort.type,
+        outputPort.name,
+        outputPort.state
+      );
+      midiOutputs.push(outputPort);
     }
+
     for (let inputPort of response.inputs.values()) {
       console.log(
         "input ports:",
@@ -20,8 +30,10 @@ export default class Midi {
     response.onstatechange = midiOnStateChange;
 
     function midiOnStateChange(event) {
-      if (event.port.type == "output")
+      if (event.port.type == "output") {
         console.log("changed:", outPort.type, outPort.name, outPort.state);
+      }
+
       if (
         event.port.type == "input" &&
         event.port.state == "connected" &&
@@ -35,8 +47,6 @@ export default class Midi {
       console.log("connected:", port.type, port.name);
       port.onmidimessage = midiMessage;
     }
-
-    let self = this;
     let midiStatusByte, midiEvent, midiChannel, midiKey, midiVelocity;
     function midiMessage(event) {
       midiStatusByte = event.data[0].toString(16);
